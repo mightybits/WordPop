@@ -187,6 +187,8 @@ package com.mightybits.hack.bubblepop.view.game
 			
 			_recordLabel.text = spoken;
 			
+			Assets.getSound("thhbt").play();
+			
 			reset();
 			
 			function cleanWord(word:String):String
@@ -201,6 +203,7 @@ package com.mightybits.hack.bubblepop.view.game
 		private function explode():void
 		{
 			Assets.getSound("pop").play();
+//			Assets.getSound("cheer").play();
 			
 			dispatchEvent(new Event(Event.COMPLETE));
 			

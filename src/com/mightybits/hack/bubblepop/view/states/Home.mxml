@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
-		 xmlns:s="library://ns.adobe.com/flex/spark" width="100%" height="100%" xmlns:view="com.mightybits.hack.bubblepop.view.*" currentState="{AppController.instance.currentState}">
+		 xmlns:s="library://ns.adobe.com/flex/spark" width="100%" height="100%" xmlns:view="com.mightybits.hack.bubblepop.view.*" >
 	
 	<fx:Script>
 		<![CDATA[
@@ -34,17 +34,11 @@
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
 	
-	<s:states>
-		<s:State name="loading" />
-		<s:State name="home" />
-		<s:State name="game" />
-	</s:states>
-	
 	<s:Image source="{AssetManager.HomeBackGroundAsset}" />
 	
 	
 	
-	<s:Group top="270" left="20" right="0" includeIn="home">
+	<s:Group top="270" left="20" right="0" >
 		<s:layout>
 			<s:TileLayout horizontalGap="40" verticalGap="90" />
 		</s:layout>

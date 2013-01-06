@@ -2,6 +2,7 @@ package assets
 {
     import flash.display.Bitmap;
     import flash.media.Sound;
+    import flash.media.SoundTransform;
     import flash.utils.ByteArray;
     import flash.utils.Dictionary;
     
@@ -24,6 +25,10 @@ package assets
         private static const Pop:Class;
         [Embed(source="assets/audio/touch.mp3")]
         private static const Touch:Class;
+        [Embed(source="assets/audio/cheering.mp3")]
+        private static const Cheering:Class;
+        [Embed(source="assets/audio/awww.mp3")]
+        private static const Thhbt:Class;
         
         // static members
         
@@ -82,6 +87,13 @@ package assets
         {
             sSounds["pop"] = new Pop();   
             sSounds["touch"] = new Touch();   
+            sSounds["cheer"] = new Cheering();   
+            sSounds["thhbt"] = new Thhbt();   
+			
+			getSound("pop").play(0,0, new SoundTransform(0));
+			getSound("touch").play(0,0, new SoundTransform(0));
+			getSound("cheer").play(0,0, new SoundTransform(0));
+			getSound("thhbt").play(0,0, new SoundTransform(0));
         }
         
         private static function prepareAtlas():void

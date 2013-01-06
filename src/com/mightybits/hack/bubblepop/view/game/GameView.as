@@ -10,7 +10,6 @@ package com.mightybits.hack.bubblepop.view.game
 	import assets.Assets;
 	
 	import starling.display.Button;
-	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.events.Event;
 	
@@ -20,6 +19,7 @@ package com.mightybits.hack.bubblepop.view.game
 		
 		private const _minBalloons:int = 6;
 		private var _totalBalloons:int = 0;
+		private var _popped:int = 0;
 		
 		private var _words:Array;
 		private var _balloons:ArrayCollection = new ArrayCollection();
@@ -50,7 +50,17 @@ package com.mightybits.hack.bubblepop.view.game
 		
 		private function onHome(event:Event):void
 		{
-			AppController.instance.changeState("home");
+//			AppController.instance.changeState("home");
+			
+			if(AppModel.currentTheme == AppModel.farmTheme)
+			{
+				AppModel.currentTheme = AppModel.ocenaTheme;
+				(AppModel.starling.root as GameContainer).createGame();
+			}else{
+				AppModel.currentTheme = AppModel.farmTheme;
+				(AppModel.starling.root as GameContainer).createGame();
+			}
+			
 		}
 		
 		override public function advanceTime(time:Number):void
@@ -82,6 +92,7 @@ package com.mightybits.hack.bubblepop.view.game
 			var balloon:Ballon = event.currentTarget as Ballon;
 			
 			_totalBalloons--;
+			_popped++;
 			
 			checkGameStatus();
 			
@@ -89,8 +100,11 @@ package com.mightybits.hack.bubblepop.view.game
 		
 		private function checkGameStatus():void
 		{
-			if(_words.length <= 0 && _totalBalloons <= 0)
+			if((_words.length <= 0 && _totalBalloons <= 0) || _popped >= 2)
 			{
+				
+				Assets.getSound("cheer").play();
+				
 				var panel:Image = addChild(new Image(Assets.getTexture("game_over_panel"))) as Image;	
 				
 				panel.x = AppModel.screenWidth/2 - panel.width/2;

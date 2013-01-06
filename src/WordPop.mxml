@@ -4,7 +4,7 @@
 			   currentState="{AppController.instance.currentState}" 
 			   initialize="preInit(event)" frameRate="40"
 			   creationComplete="init(event)" xmlns:states="com.mightybits.hack.bubblepop.view.states.*" 
-			   backgroundAlpha="0" backgroundColor="0x000000" splashScreenImage="@Embed('assets/images/SplashScreen.png')">
+			   backgroundAlpha="0" backgroundColor="0xCCCCCC" splashScreenImage="@Embed('assets/images/SplashScreen.png')">
 	
 	<fx:Script>
 		<![CDATA[
@@ -15,6 +15,7 @@
 			
 			import mx.events.FlexEvent;
 			
+			import assets.AssetManager;
 			import assets.Assets;
 			
 			import starling.core.Starling;
@@ -32,14 +33,14 @@
 			protected function init(event:FlexEvent):void
 			{	
 				var farm:Theme = new Theme();
-				farm.words = ["Bird", "Chicken", "Pig", "Barn", "Cloud", "Lake", "Grass", "Tree"];
+				farm.words = ["Rabbit", "Chicken", "Turkey", "Donkey", "Tractor", "Harvest", "Grass", "Farmer"];
 				farm.backgroundAsset = "FarmBackGroundAsset";
 				farm.bubbleAssets = ["BalloonAsset1","BalloonAsset2","BalloonAsset3","BalloonAsset4"];
 				
 				AppModel.farmTheme = farm;
 				
 				var ocean:Theme = new Theme();
-				ocean.words = ["Seal", "Fish", "Octopus", "Crab", "Shark", "Turtle", "Clam", "Whale", "Starfish"];
+				ocean.words = ["Dolphin", "Fish", "Octopus", "Anchor", "Shark", "Ocean", "Seaweed", "Boat", "Starfish"];
 				ocean.backgroundAsset = "OceanBackGroundAsset";
 				ocean.bubbleAssets = ["BubbleAsset"];
 				
@@ -76,8 +77,12 @@
 		<s:State name="game" />
 	</s:states>
 	
-	<states:Home includeIn="home,loading"/>
-	<states:Game includeIn="game" itemDestructionPolicy="auto" />
+	<s:Image source="{AssetManager.HomeBackGroundAsset}" includeIn="home,loading" />
+	
+	<s:Group>
+		<states:Home includeIn="home"/>
+		<states:Game includeIn="game" itemDestructionPolicy="auto" />
+	</s:Group>
 	
 	
 </s:Application>

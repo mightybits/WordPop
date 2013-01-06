@@ -23,6 +23,7 @@ package com.mightybits.hack.bubblepop.core
 		public function changeState(state:String):void
 		{
 			currentState = state;
+			trace("CHANGE STATE", currentState);
 		}	
 		
 		
