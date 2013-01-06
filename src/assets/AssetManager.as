@@ -12,6 +12,11 @@ package assets
 		[Embed(source="assets/images/home_bg.png")]
 		static public const HomeBackGroundAsset:Class;
 		
+		[Embed(source="assets/images/main_btn_farm.png")]
+		static public const main_btn_farm:Class;
+		[Embed(source="assets/images/main_btn_ocean.png")]
+		static public const main_btn_ocean:Class;
+		
 		// PANELS
 		[Embed(source="assets/images/game_over_panel.png")]
 		static public const game_over_panel:Class;
