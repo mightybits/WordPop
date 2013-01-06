@@ -67,6 +67,7 @@ package com.mightybits.hack.bubblepop.view.game
 		
 		protected function audioTalking(event:AudioEvent):void
 		{
+			_recordLabel.text = "";
 			_recordLabel.visible = true;
 			_pulsing = true;
 		}
@@ -78,7 +79,7 @@ package com.mightybits.hack.bubblepop.view.game
 			_pulsing = true;
 //			_wordLabel.visible = false;
 			_wordLabel.alpha = 0.8;
-			_recordLabel.visible = false;
+//			_recordLabel.visible = false;
 		}
 		
 		private function reset():void
@@ -87,7 +88,7 @@ package com.mightybits.hack.bubblepop.view.game
 			_paused = false;
 			_wordLabel.alpha = 1;
 			_wordLabel.visible = true;
-			_recordLabel.visible = false;			
+//			_recordLabel.visible = false;			
 		}
 		
 		override protected function onClick():void
@@ -108,7 +109,7 @@ package com.mightybits.hack.bubblepop.view.game
 			_originWidth = _background.width;
 			_originHeight = _background.height;
 			
-			_wordLabel = new TextField(200, 100, word, "Arial", 35, 0xFFFFFF, true);
+			_wordLabel = new TextField(200, 40, word, "Arial", 35, 0xFFFFFF, true);
 			
 			_wordLabel.x = _background.width/2 - _wordLabel.width/2;
 			_wordLabel.y = _background.width/2 - _wordLabel.height/2;
@@ -116,14 +117,14 @@ package com.mightybits.hack.bubblepop.view.game
 			addChild(_wordLabel);
 			
 			
-			_recordLabel = new TextField(200, 100, "", "Arial", 18, 0x22FF22, true);
+			_recordLabel = new TextField(200, 30, "", "Arial", 18, 0x22FF22, true);
 			
 			_recordLabel.x = _background.width/2 - _recordLabel.width/2;
-			_recordLabel.y = _background.height/2 - _recordLabel.height/2;
+			_recordLabel.y = _wordLabel.y + _wordLabel.height + 10;
 			
-			addChild(_wordLabel);	
+			addChild(_recordLabel);	
 			
-			_recordLabel.visible = false;
+//			_recordLabel.visible = false;
 		}
 		
 		override public function advanceTime(time:Number):void
@@ -183,6 +184,8 @@ package com.mightybits.hack.bubblepop.view.game
 					return;
 				}
 			}	
+			
+			_recordLabel.text = spoken;
 			
 			reset();
 			

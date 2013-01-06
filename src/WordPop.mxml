@@ -3,7 +3,8 @@
 			   xmlns:s="library://ns.adobe.com/flex/spark" applicationDPI="160" 
 			   currentState="{AppController.instance.currentState}" 
 			   initialize="preInit(event)" frameRate="40"
-			   creationComplete="init(event)" xmlns:states="com.mightybits.hack.bubblepop.view.states.*" backgroundAlpha="0" backgroundColor="0x000000">
+			   creationComplete="init(event)" xmlns:states="com.mightybits.hack.bubblepop.view.states.*" 
+			   backgroundAlpha="0" backgroundColor="0x000000" splashScreenImage="@Embed('assets/images/SplashScreen.png')">
 	
 	<fx:Script>
 		<![CDATA[
@@ -75,7 +76,7 @@
 		<s:State name="game" />
 	</s:states>
 	
-	<states:Home includeIn="home" itemDestructionPolicy="auto"/>
+	<states:Home includeIn="home,loading"/>
 	<states:Game includeIn="game" itemDestructionPolicy="auto" />
 	
 	

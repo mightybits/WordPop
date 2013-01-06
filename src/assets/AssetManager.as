@@ -12,14 +12,26 @@ package assets
 		[Embed(source="assets/images/home_bg.png")]
 		static public const HomeBackGroundAsset:Class;
 		
-		[Embed(source="assets/images/main_btn_farm.png")]
-		static public const main_btn_farm:Class;
-		
 		[Embed(source="assets/images/main_btn_ocean.png")]
 		static public const main_btn_ocean:Class;
+		[Embed(source="assets/images/main_btn_colors.png")]
+		static public const main_btn_colors:Class;
+		[Embed(source="assets/images/main_btn_farm.png")]
+		static public const main_btn_farm:Class;
+		[Embed(source="assets/images/main_btn_food.png")]
+		static public const main_btn_food:Class;
+		[Embed(source="assets/images/main_btn_numbers.png")]
+		static public const main_btn_numbers:Class;
+		[Embed(source="assets/images/main_btn_time.png")]
+		static public const main_btn_time:Class;
+		[Embed(source="assets/images/main_btn_train.png")]
+		static public const main_btn_train:Class;
+		[Embed(source="assets/images/main_btn_room.png")]
+		static public const main_btn_room:Class;
 		
 		[Embed(source="assets/images/home_btn.png")]
 		static public const home_btn:Class;
+		
 		
 		// PANELS
 		[Embed(source="assets/images/game_over_panel.png")]
