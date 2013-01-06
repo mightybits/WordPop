@@ -44,7 +44,7 @@ package com.mightybits.hack.bubblepop.view.game
 			_homeBtn = addChild(new Button(Assets.getTexture("home_btn"))) as Button;
 			_homeBtn.addEventListener(Event.TRIGGERED, onHome);
 			
-			_homeBtn.x = AppModel.screenWidth - _homeBtn.width - 10;
+			_homeBtn.x = 10;
 			_homeBtn.y = 10;
 		}	
 		

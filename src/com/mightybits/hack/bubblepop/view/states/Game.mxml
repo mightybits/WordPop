@@ -9,51 +9,50 @@
 			
 			import mx.events.FlexEvent;
 			
-			import net.hires.debug.Stats;
-			
 			import starling.core.Starling;
 			
 			private var _game:GameView;
 			
-			private static var _starling:Starling;
 			
 			protected function init(event:FlexEvent):void
 			{
-				
-				Starling.multitouchEnabled = true;  // useful on mobile devices
-				Starling.handleLostContext = false; // not necessary on iOS. Saves a lot of memory!
 							
-				if(!_starling)
+				if(!AppModel.starling)
 				{
-					_starling = new Starling(GameContainer, stage, AppModel.getViewPort());
+					AppModel.starling = new Starling(GameContainer, stage, AppModel.getViewPort());
 				}	
 				
 				addEventListener(Event.ENTER_FRAME, onEnterFrame);
-			
-				
-				
-				debug.addChild(new Stats());
+	
+//				debug.addChild(new Stats());
 			}
 			
 			protected function onRemoved(event:Event):void
 			{
-				if(_starling)
+				if(AppModel.starling)
 				{
-					(_starling.root as GameContainer).removeGame();
-					_starling.stop();
-					_starling.dispose();
+					(AppModel.starling.root as GameContainer).removeGame();
+					AppModel.starling.stop();
 				}		
 			}
 			
+			private function startGame():void
+			{
+				trace("START GAME", AppModel.starling.root);
+				
+				AppModel.starling.start();
+				
+				(AppModel.starling.root as GameContainer).createGame();
+			}	
+			
 			protected function onEnterFrame(event:Event):void
 			{
-				if(_starling.root)
+				trace("ENTER FRAME");
+				if(AppModel.starling.root)
 				{
 					removeEventListener(Event.ENTER_FRAME, onEnterFrame);
 					
-					_starling.start();
-					
-					(_starling.root as GameContainer).createGame();
+					startGame();
 				}
 			}
 			

@@ -16,8 +16,14 @@
 			
 			import assets.Assets;
 			
+			import starling.core.Starling;
+			
 			protected function preInit(event:FlexEvent):void
 			{
+				
+				Starling.multitouchEnabled = true;  // useful on mobile devices
+				Starling.handleLostContext = false; // not necessary on iOS. Saves a lot of memory!
+				
 				AppModel.screenWidth = this.width;
 				AppModel.screenHeight = this.height;
 			}
@@ -58,6 +64,7 @@
 			
 		]]>
 	</fx:Script>
+	
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
@@ -68,8 +75,8 @@
 		<s:State name="game" />
 	</s:states>
 	
-	<states:Home includeIn="home" />
-	<states:Game includeIn="game" />
+	<states:Home includeIn="home" itemDestructionPolicy="auto"/>
+	<states:Game includeIn="game" itemDestructionPolicy="auto" />
 	
 	
 </s:Application>

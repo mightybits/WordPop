@@ -13,11 +13,17 @@ package com.mightybits.hack.bubblepop.view.game
 			super();
 			
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStageHandler);
+			
 		}
 		
 		protected function onAddedToStageHandler(event:Event):void
 		{
 			onAdded();
+		}
+		
+		override public function dispose():void
+		{
+			super.dispose();
 		}
 		
 		protected function onAdded():void

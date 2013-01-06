@@ -3,6 +3,8 @@ package com.mightybits.hack.bubblepop.core
 	import com.mightybits.hack.bubblepop.data.Theme;
 	
 	import flash.geom.Rectangle;
+	
+	import starling.core.Starling;
 
 	public class AppModel
 	{
@@ -23,6 +25,8 @@ package com.mightybits.hack.bubblepop.core
 		public static var currentTheme:Theme;
 		public static var farmTheme:Theme;
 		public static var ocenaTheme:Theme;
+		
+		public static var starling:Starling;
 		
 		public static function getViewPort():Rectangle
 		{

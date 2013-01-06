@@ -17,12 +17,19 @@ package com.mightybits.hack.bubblepop.view.game
 			
 			_game = new GameView();
 			addChild(_game);
+			
+			trace(this, "createGame", _game);
 		}	
 		
 		public function removeGame():void
 		{
+			trace(this, "removeGame", _game);
+			
 			if(_game)
-				removeChild(_game);
+			{
+				removeChild(_game, true);
+				
+			}
 		}	
 	}
 }

@@ -77,6 +77,7 @@ package com.mightybits.hack.bubblepop.view.game
 			
 			_pulsing = true;
 //			_wordLabel.visible = false;
+			_wordLabel.alpha = 0.8;
 			_recordLabel.visible = false;
 		}
 		
@@ -84,6 +85,7 @@ package com.mightybits.hack.bubblepop.view.game
 		{
 			_pulsing = false;
 			_paused = false;
+			_wordLabel.alpha = 1;
 			_wordLabel.visible = true;
 			_recordLabel.visible = false;			
 		}
@@ -114,7 +116,7 @@ package com.mightybits.hack.bubblepop.view.game
 			addChild(_wordLabel);
 			
 			
-			_recordLabel = new TextField(200, 100, "RECORDING", "Arial", 18, 0x22FF22, true);
+			_recordLabel = new TextField(200, 100, "", "Arial", 18, 0x22FF22, true);
 			
 			_recordLabel.x = _background.width/2 - _recordLabel.width/2;
 			_recordLabel.y = _background.height/2 - _recordLabel.height/2;
