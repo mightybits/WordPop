@@ -38,8 +38,8 @@
 	
 	
 	<s:HGroup horizontalCenter="0" verticalCenter="0" gap="35">
-		<view:MainButton label="OCEAN" width="150" fontSize="30" height="120" click="playOcean(event)" skinClass="skins.MainButtonSkin" icon="{AssetManager.main_btn_ocean}" />
-		<view:MainButton label="FARM" width="150" fontSize="30" height="120" click="playFarm(event)" skinClass="skins.MainButtonSkin" icon="{AssetManager.main_btn_farm}" />
+		<s:Button label="OCEAN" width="200" fontSize="30" height="200" click="playOcean(event)" skinClass="skins.MainButtonSkin" icon="{AssetManager.main_btn_ocean}" />
+		<s:Button label="FARM" width="200" fontSize="30" height="200" click="playFarm(event)" skinClass="skins.MainButtonSkin" icon="{AssetManager.main_btn_farm}" />
 	</s:HGroup>
 	
 </s:Group>

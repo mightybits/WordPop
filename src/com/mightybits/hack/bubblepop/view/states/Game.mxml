@@ -4,6 +4,7 @@
 	<fx:Script>
 		<![CDATA[
 			import com.mightybits.hack.bubblepop.core.AppModel;
+			import com.mightybits.hack.bubblepop.view.game.GameContainer;
 			import com.mightybits.hack.bubblepop.view.game.GameView;
 			
 			import mx.events.FlexEvent;
@@ -13,22 +14,23 @@
 			import starling.core.Starling;
 			
 			private var _game:GameView;
-			private var _starling:Starling;
+			
+			private static var _starling:Starling;
 			
 			protected function init(event:FlexEvent):void
 			{
 				
 				Starling.multitouchEnabled = true;  // useful on mobile devices
 				Starling.handleLostContext = false; // not necessary on iOS. Saves a lot of memory!
+							
+				if(!_starling)
+				{
+					_starling = new Starling(GameContainer, stage, AppModel.getViewPort());
+				}	
 				
+				addEventListener(Event.ENTER_FRAME, onEnterFrame);
+			
 				
-				
-				_starling = new Starling(GameView, stage, AppModel.getViewPort());
-				_starling.start();
-				
-				/*_game = new GameView();
-				
-				gameView.addChild(_game);	*/
 				
 				debug.addChild(new Stats());
 			}
@@ -37,11 +39,22 @@
 			{
 				if(_starling)
 				{
+					(_starling.root as GameContainer).removeGame();
 					_starling.stop();
 					_starling.dispose();
+				}		
+			}
+			
+			protected function onEnterFrame(event:Event):void
+			{
+				if(_starling.root)
+				{
+					removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+					
+					_starling.start();
+					
+					(_starling.root as GameContainer).createGame();
 				}
-					
-					
 			}
 			
 		]]>

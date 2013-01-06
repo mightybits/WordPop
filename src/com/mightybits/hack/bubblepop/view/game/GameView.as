@@ -1,5 +1,6 @@
 package com.mightybits.hack.bubblepop.view.game
 {
+	import com.mightybits.hack.bubblepop.core.AppController;
 	import com.mightybits.hack.bubblepop.core.AppModel;
 	
 	import flash.utils.getTimer;
@@ -8,6 +9,8 @@ package com.mightybits.hack.bubblepop.view.game
 	
 	import assets.Assets;
 	
+	import starling.display.Button;
+	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.events.Event;
 	
@@ -22,6 +25,7 @@ package com.mightybits.hack.bubblepop.view.game
 		private var _balloons:ArrayCollection = new ArrayCollection();
 		private var _selectedBloon:Ballon;
 		private var _lastBalloonLanch:int = 0;
+		private var _homeBtn:Button;
 		
 		
 		public function GameView()
@@ -35,7 +39,19 @@ package com.mightybits.hack.bubblepop.view.game
 		override protected function init():void
 		{
 			addChild(new Image(Assets.getTexture(AppModel.currentTheme.backgroundAsset)));		
+			
+			
+			_homeBtn = addChild(new Button(Assets.getTexture("home_btn"))) as Button;
+			_homeBtn.addEventListener(Event.TRIGGERED, onHome);
+			
+			_homeBtn.x = AppModel.screenWidth - _homeBtn.width - 10;
+			_homeBtn.y = 10;
 		}	
+		
+		private function onHome(event:Event):void
+		{
+			AppController.instance.changeState("home");
+		}
 		
 		override public function advanceTime(time:Number):void
 		{

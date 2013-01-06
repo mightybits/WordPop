@@ -84,7 +84,7 @@ package com.mightybits.hack.bubblepop.view.game
 					{
 						_isPressed = false;
 						
-						isRolledOut();
+//						isRolledOut();
 						
 						onClick();
 //						dispatchEvent(new MouseEvent(MouseEvent.CLICK));

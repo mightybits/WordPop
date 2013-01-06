@@ -68,13 +68,15 @@ package com.mightybits.hack.bubblepop.view.game
 		protected function audioTalking(event:AudioEvent):void
 		{
 			_recordLabel.visible = true;
+			_pulsing = true;
 		}
 		
 		protected function audioThinking(event:AudioEvent):void
 		{
 			trace("---------------");
+			
 			_pulsing = true;
-			_wordLabel.visible = false;
+//			_wordLabel.visible = false;
 			_recordLabel.visible = false;
 		}
 		
@@ -170,7 +172,10 @@ package com.mightybits.hack.bubblepop.view.game
 				var a:String = cleanWord(this.word);
 				var b:String = cleanWord(spoke);
 				
-				if(a == b)
+				var isContainedA:Boolean = a.indexOf(b) >= 0;
+				var isContainedB:Boolean = b.indexOf(a) >= 0;
+				
+				if(a == b || isContainedA || isContainedB)
 				{
 					explode();
 					return;
