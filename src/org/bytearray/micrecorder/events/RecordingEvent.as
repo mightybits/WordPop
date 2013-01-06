@@ -6,6 +6,7 @@ package org.bytearray.micrecorder.events
 	{
 		public static const RECORDING:String = "recording";
 		public static const TALK_COMPLETE:String = "talkingComplete";
+		public static const SEARCH_COMPLETE:String = "searchComplete";
 		
 		private var _time:Number;
 		

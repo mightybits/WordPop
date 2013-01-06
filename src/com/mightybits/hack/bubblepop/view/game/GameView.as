@@ -1,107 +1,85 @@
 package com.mightybits.hack.bubblepop.view.game
 {
 	import com.mightybits.hack.bubblepop.core.AppModel;
-	import com.mightybits.hack.bubblepop.core.AudioController;
 	
-	import flash.display.Bitmap;
-	import flash.text.TextField;
-	import flash.text.TextFormat;
+	import flash.utils.getTimer;
 	
 	import mx.collections.ArrayCollection;
 	
-	import assets.AssetManager;
+	import assets.Assets;
+	
+	import starling.display.Image;
+	import starling.events.Event;
 	
 	
-	public class GameView extends GameSprite
+	public class GameView extends AnimatedSprite
 	{
-		private var _audioController:AudioController;
+		
+		private const _minBalloons:int = 6;
+		private var _totalBalloons:int = 0;
+		
 		private var _words:Array;
 		private var _balloons:ArrayCollection = new ArrayCollection();
-		private var _textOutput:TextField;
+		private var _selectedBloon:Ballon;
+		private var _lastBalloonLanch:int = 0;
 		
 		
 		public function GameView()
 		{
 			super();
 			
-			_words = ["CAT", "DOG", "BARN", "COW", "ROOSTER", "APPLE", "TRACTOR", "HORSE"];
+			_words = AppModel.currentTheme.words.concat();
 			
-			_audioController = new AudioController(onWordsSpoken);
 		}
 		
 		override protected function init():void
 		{
-			var bg:Bitmap = new AssetManager.OceanBackGroundAsset();
-			addChild(bg);
-			
-			
-			var bloon:Ballon;
-			for (var i:int = 0; i<_words.length; i++)
+			addChild(new Image(Assets.getTexture(AppModel.currentTheme.backgroundAsset)));		
+		}	
+		
+		override public function advanceTime(time:Number):void
+		{
+			if(getTimer() - _lastBalloonLanch > 3000)
 			{
-				bloon = new Ballon(_words[i]);
-				bloon.x = Math.random() * AppModel.screenWidth;
-				bloon.y = Math.random() * AppModel.screenHeight;
-				addChild(bloon);
-				
-				_balloons.addItem(bloon);
-			}
+				if(_totalBalloons < _minBalloons && _words.length > 0)
+				{
+					launchBalloon();
+				}
+			}			
+		}
+		
+		private function launchBalloon():void
+		{
+			trace("launch");
 			
-			GameTimer.instance.start();
-			_audioController.start();
+			_lastBalloonLanch = getTimer();
+			var bloon:Ballon = new Ballon(_words.shift());
+			bloon.y = (Math.random() * 100) + AppModel.screenHeight;
+			bloon.addEventListener(Event.COMPLETE, onBallonComplete);
+			addChild(bloon);
 			
-			var format:TextFormat = new TextFormat("Arial", 55, 0xCCCCCC, true);
-			_textOutput = new TextField();
-			_textOutput.autoSize = "left";
-			_textOutput.defaultTextFormat = format;
-			_textOutput.text = "...";
+			_totalBalloons++;
+		}
+		
+		private function onBallonComplete(event:Event):void
+		{
+			var balloon:Ballon = event.currentTarget as Ballon;
 			
-			addChild(_textOutput);
+			_totalBalloons--;
 			
-			_textOutput.x = 10;
-			_textOutput.y = AppModel.screenHeight - _textOutput.height - 10;
+			checkGameStatus();
 			
 		}
 		
-		private function onWordsSpoken(words:Array):void
+		private function checkGameStatus():void
 		{
-			var spoken:String = ""
-			
-			for each (var w:String in words)
+			if(_words.length <= 0 && _totalBalloons <= 0)
 			{
-				spoken += cleanWord(w)+" ";
-			}
-			
-			trace("WORDS: ", spoken);
-			_textOutput.text = spoken;
-			
-			for each (var item:Ballon in _balloons)
-			{
-				for each (var word:String in words)
-				{
-					var a:String = cleanWord(item.word);
-					var b:String = cleanWord(word);
+				var panel:Image = addChild(new Image(Assets.getTexture("game_over_panel"))) as Image;	
 				
-					
-					if(a == b)
-					{
-						this.removeChild(item);
-						_balloons.removeItemAt(_balloons.getItemIndex(item));
-					}
-				}	
-			}	
-			
-			
-			
-			
-			function cleanWord(word:String):String
-			{
-				word = word.toLowerCase();
-				word = word.replace(/[.?!]/gi, "");
-				
-				return word;
+				panel.x = AppModel.screenWidth/2 - panel.width/2;
+				panel.y = AppModel.screenHeight/2 - panel.height/2;
 			}
-		}		
-		
-		
+		}
 	}
 }

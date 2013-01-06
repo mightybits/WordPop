@@ -1,6 +1,9 @@
 package com.mightybits.hack.bubblepop.core
 {
+	import com.mightybits.hack.bubblepop.AudioEvent;
+	
 	import flash.events.Event;
+	import flash.events.EventDispatcher;
 	import flash.events.IOErrorEvent;
 	import flash.media.Microphone;
 	import flash.net.URLLoader;
@@ -12,17 +15,15 @@ package com.mightybits.hack.bubblepop.core
 	import org.bytearray.micrecorder.encoder.WaveEncoder;
 	import org.bytearray.micrecorder.events.RecordingEvent;
 
-	public class AudioController
+	public class AudioController extends EventDispatcher
 	{
-		private var mic:Microphone;
-		private var encoder:WaveEncoder;
-		private var recorder:MicRecorder;
-		
-		private var recording:Boolean = false;
+		public static var mic:Microphone = Microphone.getMicrophone();
+
+		private var recorder:MicRecorder;		
 		
 		private var callBack:Function;
 		
-		public function AudioController(callBack:Function)
+		public function AudioController()
 		{
 			this.callBack = callBack;
 			
@@ -32,42 +33,34 @@ package com.mightybits.hack.bubblepop.core
 		protected function init():void
 		{
 			
-			mic = Microphone.getMicrophone();
-			
-			mic.setSilenceLevel(0);
-			mic.gain = 50;
-			
-			encoder = new WaveEncoder();
-			recorder = new MicRecorder(encoder, mic);
+			recorder = new MicRecorder(new WaveEncoder(), mic, 50, 44, 0);
 			recorder.addEventListener(RecordingEvent.TALK_COMPLETE, onTalkingComplete);
-			recorder.record();
+
 		}
 		
 		public function start():void
 		{	
-			recording = true;
 			recorder.record();	
+			dispatchEvent(new AudioEvent(AudioEvent.MODE_TALKING));
 		}
 		
 		public function stop():void
 		{
-			recording = false;
-			recorder.stop();
+			dispatchEvent(new AudioEvent(AudioEvent.MODE_THINKING));
+			getTextFromSpeach();
 		}
-		
-		public function restart():void
-		{
-			if(recording) recorder.record();	
-		}	
-		
 		
 		private function getTextFromSpeach():void
 		{
+			
+			
+			trace(this, "getTextFromSpeach");
+			
 			var request:URLRequest = new URLRequest(AppModel.API_URL_SPEECH);
 			request.requestHeaders.push(new URLRequestHeader("Authorization", "Bearer "+ AppModel.access_token));
 			request.requestHeaders.push(new URLRequestHeader("Accept", "application/json"));
 			request.requestHeaders.push(new URLRequestHeader("Content-Type", "audio/wav"));
-			request.requestHeaders.push(new URLRequestHeader("X-SpeechContext", "Generic"));
+			request.requestHeaders.push(new URLRequestHeader("X-SpeechContext", "SMS"));
 			
 			request.method = URLRequestMethod.POST;
 			
@@ -82,20 +75,19 @@ package com.mightybits.hack.bubblepop.core
 			function onSpeechComplete(event:Event):void
 			{
 				var object:Object = JSON.parse(event.currentTarget.data);			
-				var words:Array;
+				var words:Array = [];
 				var hypothesis:String;
 				
 				if(object.Recognition.Status == "OK")
 				{
 					words = object.Recognition.NBest[0].Words;
 					hypothesis = object.Recognition.NBest[0].Hypothesis;
-					
-					submitWords(words);
 				}else{
 					if(object.Recognition)
 						trace("ERROR RESULT", object.Recognition.Status);	
 				}
 				
+				dispatchEvent(new AudioEvent(AudioEvent.MODE_COMPLETE, words)); 			
 			}
 			
 			function onSpeechError(event:IOErrorEvent):void
@@ -104,26 +96,12 @@ package com.mightybits.hack.bubblepop.core
 			}
 		}
 		
-		private function submitWords(words:Array):void
-		{
-			callBack(words);
-		}
-		
-	/*	protected function playSound(event:MouseEvent):void
-		{
-			trace("PLAY");
-			
-			var player:WavSound = new WavSound(recorder.output);
-			player.play();	
-		}*/
 		
 		protected function onTalkingComplete(event:Event):void
 		{
-			recorder.stop();
+			trace(this, "onTalkingComplete");
 			
-			getTextFromSpeach();
-			
-			restart();
+			stop();
 		}
 	}
 }

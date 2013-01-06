@@ -5,11 +5,28 @@
 	<fx:Script>
 		<![CDATA[
 			import com.mightybits.hack.bubblepop.core.AppController;
+			import com.mightybits.hack.bubblepop.core.AppModel;
 			
-			protected function playGame(event:MouseEvent):void
+			import assets.AssetManager;
+			
+			protected function playGame():void
 			{
 				AppController.instance.changeState("game");
 			}
+			
+			protected function playOcean(event:MouseEvent):void
+			{
+				AppModel.currentTheme = AppModel.ocenaTheme;
+				playGame();
+				
+			}
+			
+			protected function playFarm(event:MouseEvent):void
+			{
+				AppModel.currentTheme = AppModel.farmTheme;
+				playGame();
+			}
+			
 		]]>
 	</fx:Script>
 	
@@ -17,10 +34,12 @@
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
 	
-	<s:Label horizontalCenter="0" top="130" text="Bubble Pop" fontSize="45" />
+	<s:Image source="{AssetManager.HomeBackGroundAsset}" />
 	
-	<s:VGroup horizontalCenter="0" verticalCenter="0">
-		<s:Button label="PLAY" width="240" fontSize="40" height="100" click="playGame(event)" />
-	</s:VGroup>
+	
+	<s:HGroup horizontalCenter="0" verticalCenter="0" gap="35">
+		<s:Button label="OCEAN" width="150" fontSize="30" height="120" click="playOcean(event)" />
+		<s:Button label="FARM" width="150" fontSize="30" height="120" click="playFarm(event)" />
+	</s:HGroup>
 	
 </s:Group>

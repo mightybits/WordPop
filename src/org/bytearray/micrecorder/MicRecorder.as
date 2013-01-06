@@ -8,7 +8,6 @@ package org.bytearray.micrecorder
 	import flash.utils.ByteArray;
 	import flash.utils.getTimer;
 	
-	import org.bytearray.micrecorder.encoder.WaveEncoder;
 	import org.bytearray.micrecorder.events.RecordingEvent;
 	
 	/**
@@ -64,9 +63,9 @@ package org.bytearray.micrecorder
 		private var _encoder:IEncoder;
 		private var _startedTalking:Boolean;
 		
-		private var _completeEvent:Event = new Event ( Event.COMPLETE );
+		private var _searchEvent:RecordingEvent = new RecordingEvent( RecordingEvent.SEARCH_COMPLETE, 0 );
+		private var _completeEvent:RecordingEvent = new RecordingEvent( RecordingEvent.TALK_COMPLETE, 0 );
 		private var _recordingEvent:RecordingEvent = new RecordingEvent( RecordingEvent.RECORDING, 0 );
-		private var _talkingComplete:RecordingEvent = new RecordingEvent( RecordingEvent.TALK_COMPLETE, 0 );
 		
 		private var _talkBuffer:int;
 
@@ -96,6 +95,8 @@ package org.bytearray.micrecorder
 		 */		
 		public function record():void
 		{
+			trace(this, "record");
+			
 			if ( _microphone == null )
 				_microphone = Microphone.getMicrophone();
 			 
@@ -121,44 +122,16 @@ package org.bytearray.micrecorder
 		 */		
 		private function onSampleData(event:SampleDataEvent):void
 		{
-			var threshhold:int = 18;
-			var isTalking:Boolean = _microphone.activityLevel > threshhold;
-			var isComplete:Boolean = false;
+			_recordingEvent.time = getTimer() - _difference;
 			
-			if(isTalking && !_startedTalking)
-			{
-				trace("Start Talking");
-				_startedTalking = true;
-				_talkBuffer = 20;
-			}
+			dispatchEvent( _recordingEvent );
 			
-			if(_startedTalking)
-			{
-				if(!isTalking) _talkBuffer--;
-//				if(isTalking) trace("...");
-				if(_talkBuffer <= 0)
-				{
-					_startedTalking = false;
-					isComplete = true;
-					trace("Stop Talking");
-				}
-			}
+			while(event.data.bytesAvailable > 0)
+				_buffer.writeFloat(event.data.readFloat());
 			
-			if(_startedTalking)
-			{
-				_recordingEvent.time = getTimer() - _difference;
-				
-				dispatchEvent( _recordingEvent );
-				
-				while(event.data.bytesAvailable > 0)
-					_buffer.writeFloat(event.data.readFloat());
-			}
+			trace(_recordingEvent.time);
 			
-			if(isComplete)
-			{		
-				dispatchEvent( _talkingComplete );
-			}
-				
+			if(_recordingEvent.time > 1400) stop();
 		}
 		
 		/**
@@ -166,12 +139,16 @@ package org.bytearray.micrecorder
 		 */		
 		public function stop():void
 		{
+			trace(this, "stop");
+			
 			_microphone.removeEventListener(SampleDataEvent.SAMPLE_DATA, onSampleData);
 			
 			_buffer.position = 0;
-			_output = _encoder.encode(_buffer, 1);
+			_output = _encoder.encode(_buffer, 1/*, 16, 8*/);
 			
 			dispatchEvent( _completeEvent );
+			
+//			trace(this, "stop:dispatch", _completeEvent.type);
 		}
 		
 		/**
